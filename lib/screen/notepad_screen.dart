@@ -13,37 +13,79 @@ class NotepadPage extends StatefulWidget {
 class _NotepadPageState extends State<NotepadPage> {
   Color _selectedColor = Colors.black;
   bool _isDrawingMode = false;
-  final List<List<Offset?>> _drawings = []; 
-  List<Offset?> _currentPoints = []; 
+  final List<List<Offset?>> _drawings = [];
+  List<Offset?> _currentPoints = [];
   String _text = '';
-  final Offset _textPosition = const Offset(20, 100); 
+  final Offset _textPosition = const Offset(20, 100);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 8,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
+        ),
         actions: [
-          ElevatedButton(
-            onPressed: () {
-              setState(() {
-                _drawings.clear(); 
-                _text = ''; 
-              });
-            },
-            child: const Text('Delete All'),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: IconButton(
+                icon: const Icon(Icons.photo,
+                    color: Colors.blue, size: 28), 
+                onPressed: (){},
+              ),
+            ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  _drawings.clear();
+                  _text = '';
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.red, // Text color
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10), // Rounded corners
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              ),
+              child: const Text('Delete All'),
+            ),
           ),
-          ElevatedButton(
-            onPressed: () {
-              setState(() {
-                _isDrawingMode = !_isDrawingMode; 
-              });
-            },
-            child: Text(_isDrawingMode ? 'Text Mode' : 'Draw Mode'),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  _isDrawingMode = !_isDrawingMode;
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.blue, // Text color
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10), // Rounded corners
+                ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              ),
+              child: Text(_isDrawingMode ? 'Text Mode' : 'Draw Mode'),
+            ),
           ),
-          IconButton(
-            icon: const Icon(Icons.color_lens),
-            onPressed: () => _showColorPicker(context),
-          ),
+          if (_isDrawingMode) 
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: IconButton(
+                icon: const Icon(Icons.color_lens,
+                    color: Colors.blue, size: 28), 
+                onPressed: () => _showColorPicker(context),
+              ),
+            ),
         ],
       ),
       body: _isDrawingMode ? _buildDrawingMode() : _buildTextMode(),
@@ -70,7 +112,7 @@ class _NotepadPageState extends State<NotepadPage> {
           style: const TextStyle(fontSize: 18, color: Colors.black),
           onChanged: (value) {
             setState(() {
-              _text = value; 
+              _text = value;
             });
           },
         ),
@@ -94,22 +136,22 @@ class _NotepadPageState extends State<NotepadPage> {
 
   void _onPanStart(DragStartDetails details) {
     setState(() {
-      _currentPoints = [details.localPosition]; 
+      _currentPoints = [details.localPosition];
     });
   }
 
   void _onPanUpdate(DragUpdateDetails details) {
     setState(() {
-      _currentPoints.add(details.localPosition); 
+      _currentPoints.add(details.localPosition);
     });
   }
 
   void _onPanEnd(DragEndDetails details) {
     setState(() {
       if (_currentPoints.isNotEmpty) {
-        _drawings.add(List.from(_currentPoints)); 
+        _drawings.add(List.from(_currentPoints));
       }
-      _currentPoints.clear(); 
+      _currentPoints.clear();
     });
   }
 
