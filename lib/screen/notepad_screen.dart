@@ -221,6 +221,7 @@ class _NotepadPageState extends State<NotepadPage> {
     
     if (imageFile != null) {
       // Load image from file
+      print("hello")
       final bytes = await imageFile.readAsBytes();
       final codec = await ui.instantiateImageCodec(bytes);
       final frameInfo = await codec.getNextFrame();
